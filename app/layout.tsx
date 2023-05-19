@@ -10,6 +10,7 @@ import {ThemeProvider} from "@/components/theme-provider"
 import {Toaster} from "@/components/ui/toaster";
 import React from "react";
 import Footer from "@/components/footer";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   title: {
@@ -36,6 +37,29 @@ export default function RootLayout({children}: RootLayoutProps) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
+      <Head>
+        <title>Andronix Commands</title>
+
+        <meta name="title" content="Andronix Commands"/>
+        <meta name="description"
+              content="Andronix Commands provides access to your saved terminal commands right from your browser. anytime anywhere."/>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta property="og:description"
+              content="Andronix Commands provides access to your saved terminal commands right from your browser. anytime anywhere."/>
+        <meta property="og:image" content="https://web.andronix.app/og.jpeg"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Andronix Commands"/>
+        <meta property="og:url" content="https://web.andronix.app"/>
+
+        <meta property="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:title" content="Andronix Commands"/>
+        <meta property="twitter:description"
+              content="Andronix Commands provides access to your saved terminal commands right from your browser. anytime anywhere."/>
+        <meta property="twitter:image" content="https://web.andronix.app/og.jpeg"/>
+        <meta property="twitter:url" content="https://web.andronix.app"/>
+
+      </Head>
       <head/>
       <body
         className={cn(
