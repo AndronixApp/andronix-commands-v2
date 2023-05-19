@@ -1,10 +1,4 @@
-import {
-  LucideProps,
-  Moon,
-  SunMedium,
-  Twitter,
-  type Icon as LucideIcon,
-} from "lucide-react"
+import {type Icon as LucideIcon, LucideProps, Moon, SunMedium, Twitter,} from "lucide-react"
 import {IoLogoGooglePlaystore} from "react-icons/io5";
 
 export type Icon = LucideIcon
@@ -15,9 +9,17 @@ export const Icons = {
   playStore: IoLogoGooglePlaystore,
   twitter: Twitter,
   logo: (props: LucideProps) => (
-    <div className={"text-lg font-bold"}>
-      <p className={"text-gray-700 dark:text-white"}>andronix<span className={"text-orange-400"}>.</span>app/<span className={"text-orange-400"}>web</span>
-      </p>
+    <div>
+      <div className={"text-lg font-bold md:flex hidden"}>
+        <p className={"text-gray-700 dark:text-white"}>andronix<span className={"text-orange-400"}>.</span>app/<span
+          className={"text-orange-400"}>web</span>
+        </p>
+      </div>
+      <div className={"text-lg font-bold md:hidden flex"}>
+        <span
+          className={"text-orange-400"}>/<span
+          className={"dark:text-white text-gray-900"}>commands</span></span>
+      </div>
     </div>
   ),
   gitHub: (props: LucideProps) => (

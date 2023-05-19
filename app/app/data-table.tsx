@@ -101,7 +101,7 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
   }, [table])
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="grid grid-cols-1 items-center py-4 gap-4 md:grid-cols-2 md:flex-row">
         <div className={"flex w-full items-center py-4"}>
           <Input
             placeholder="Filter commands..."
@@ -154,10 +154,10 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
           }
           </>
         </div>
-        <div>
+        <div className={"col-span-1 justify-self-end"}>
           <Dialog open={addModalOpen}>
             <DialogTrigger>
-              <Button onClick={
+              <Button size={"lg"} onClick={
                 () => {
                   setAddModalOpen(true)
                 }
@@ -174,7 +174,7 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
         </div>
 
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md my-5 -m-3 border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
