@@ -7,7 +7,7 @@ import {cn} from "@/lib/utils"
 import {SiteHeader} from "@/components/site-header"
 import {TailwindIndicator} from "@/components/tailwind-indicator"
 import {ThemeProvider} from "@/components/theme-provider"
-import {Toaster} from "react-hot-toast"
+import {Toaster} from "@/components/ui/toaster";
 import React from "react";
 import Footer from "@/components/footer";
 
@@ -36,7 +36,7 @@ export default function RootLayout({children}: RootLayoutProps) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-      <head />
+      <head/>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

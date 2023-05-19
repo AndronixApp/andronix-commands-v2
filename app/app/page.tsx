@@ -13,6 +13,7 @@ import {AlertCircle} from "lucide-react";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {DataTable} from "./data-table";
 import {getColumns} from "@/app/app/columns";
+import {useToast} from "@/components/ui/use-toast";
 
 
 export interface ManipulatedCommand {
@@ -23,6 +24,7 @@ export interface ManipulatedCommand {
 }
 
 export default function AppPage() {
+  const {toast} = useToast()
   const auth = getAuth(firebase)
   const [user, loadingAuth, errorAuth] = useAuthState(auth)
   const [value, loading, error] = useCollection(
@@ -62,7 +64,7 @@ export default function AppPage() {
           </p>
         </div>
         {value && (
-          <DataTable columns={getColumns(user?.uid ?? "")} data={commands} uid={user?.uid ?? ""}/>
+          <DataTable columns={getColumns(user?.uid ?? "", toast)} data={commands} uid={user?.uid ?? ""}/>
         )}
 
       </section>

@@ -22,9 +22,11 @@ import {BsCheck} from "react-icons/bs";
 import {Textarea} from "@/components/ui/textarea";
 import {deleteDoc, doc, getFirestore, updateDoc} from "@firebase/firestore";
 import firebase from "@/lib/firebase";
-import toast from "react-hot-toast";
+import {useToast} from "@/components/ui/use-toast";
+import {VscCopy} from "react-icons/all";
 
-export const getColumns = (uid: string): ColumnDef<ManipulatedCommand>[] => [
+
+export const getColumns = (uid: string, toast: any): ColumnDef<ManipulatedCommand>[] => [
   {
     accessorKey: "command",
     cell: ({row}) => {
@@ -78,7 +80,12 @@ export const getColumns = (uid: string): ColumnDef<ManipulatedCommand>[] => [
     id: "actions",
     cell: ({row}) => {
       const command: string = row.getValue('command') ?? ''
-      return (<div>
+      return (
+        <div className={"flex items-center justify-center space-x-3"}>
+          <VscCopy className={"text-md m-3 cursor-pointer transition transform hover:scale-125 duration-200 ease-in-out"} onClick={() => {
+            navigator.clipboard.writeText(command)
+              .then(() => toast({description: "Copied Command"}))
+          }}/>
           <Dialog>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -91,7 +98,7 @@ export const getColumns = (uid: string): ColumnDef<ManipulatedCommand>[] => [
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem
                   onClick={() => navigator.clipboard.writeText(row.getValue('id'))
-                    .then(() => toast.success("Copied Command ID"))
+                    .then(() => toast({description: "Copied Command ID"}))
                   }
                 >
                   Copy Command ID
@@ -100,15 +107,19 @@ export const getColumns = (uid: string): ColumnDef<ManipulatedCommand>[] => [
                 <DialogTrigger asChild>
                   <DropdownMenuItem>Edit</DropdownMenuItem>
                 </DialogTrigger>
-                <DropdownMenuItem onClick={() => {
+                <DropdownMenuItem onClick={async () => {
                   const commandRef = doc(getFirestore(firebase!), "users", uid, "commands", row.getValue('id'))
                   //delete the doc
                   try {
-                    deleteDoc(commandRef)
-                    toast.success("Command deleted.")
+                    await deleteDoc(commandRef)
+                    toast({
+                      description: "Command Deleted.",
+                    })
                   } catch (e) {
                     console.log({e})
-                    toast.error("Something went wrong")
+                    toast({
+                      description: "Something went wrong.",
+                    })
                   }
                 }
                 } className={"text-red-500"}>Delete</DropdownMenuItem>
@@ -135,6 +146,7 @@ export const getColumns = (uid: string): ColumnDef<ManipulatedCommand>[] => [
 const EditDialog = ({command, uid}: { command: ManipulatedCommand, uid: string }) => {
 
   console.log({command})
+  const {toast} = useToast()
   const [selectedColor, setSelectedColor] = useState(command.color)
   const [loading, setLoading] = useState(false)
   const commRef = useRef("")
@@ -155,10 +167,10 @@ const EditDialog = ({command, uid}: { command: ManipulatedCommand, uid: string }
         dis: newDescription,
         color: newColor
       })
-      toast.success("Command updated.")
+      toast({description: "Command updated."})
     } catch (e) {
       console.log({e})
-      toast.error("Something went wrong")
+      toast({description: "Something went wrong"})
     }
   }
   return (
@@ -185,7 +197,7 @@ const EditDialog = ({command, uid}: { command: ManipulatedCommand, uid: string }
                 onClick={() => {
                   setSelectedColor(color.value)
                 }}
-                className={`flex flex-wrap w-fit cursor-pointer items-center justify-center rounded-md bg-opacity-40 px-3 py-1 ${convertHexCodesToTailwindColors(color.value)}`}>
+                className={`flex w-fit cursor-pointer flex-wrap items-center justify-center rounded-md bg-opacity-40 px-3 py-1 ${convertHexCodesToTailwindColors(color.value)}`}>
                 {selectedColor === color.value &&
                   <BsCheck className={"ml-3"}/>
                 }

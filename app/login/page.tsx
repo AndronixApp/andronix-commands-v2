@@ -6,8 +6,8 @@ import firebase from "@/lib/firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useEffect, useRef} from "react";
 import {CgSpinner} from "react-icons/cg";
-import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
+import {useToast} from "@/components/ui/use-toast";
 
 
 const auth = getAuth(firebase);
@@ -31,20 +31,20 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      console.log("User logged in")
+      toast({title: "Login Successful!", description: `Welcome back ${user?.displayName}`})
       router.push("/app")
     } else
       console.log("User logged out")
   }, [user]);
 
   useEffect(() => {
-    if(error){
-      toast.error(`Oops! Something went wrong ${error}`)
+    if (error) {
+      toast({description: `Oops! Something went wrong ${error}`, variant: "destructive"})
     }
   }, [error]);
 
+  const {toast} = useToast()
   const handleSubmit = async (e: any) => {
-
     // @ts-ignore
     const email = emailRef.current.value
     // @ts-ignore
@@ -58,13 +58,13 @@ export default function LoginPage() {
         try {
           await login(email, password)
         } catch (e) {
-          toast.error(`Oops! Something went wrong ${e}`)
+          toast({description: `Oops! Something went wrong ${e}`, variant: "destructive"})
         }
       } else {
-        toast.error("Password must be greater than 6 characters")
+        toast({description: "Password must be greater than 6 characters", variant: "destructive"})
       }
     } else {
-      toast.error("Please enter a valid email")
+      toast({description: "Please enter a valid email", variant: "destructive"})
     }
   }
   return (
@@ -103,7 +103,7 @@ export default function LoginPage() {
               <span className="relative bg-white px-4 text-sm text-gray-400 dark:bg-background dark:text-gray-600">Log in with social</span>
             </div>
 
-            <button onClick={loginWithGoogle}
+            <button type={"button"} onClick={loginWithGoogle}
                     className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base">
               {!loading &&
                 <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none"

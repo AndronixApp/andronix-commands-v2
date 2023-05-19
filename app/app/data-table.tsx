@@ -36,6 +36,7 @@ import {Textarea} from "@/components/ui/textarea";
 import {BsCheck} from "react-icons/bs";
 import {CgSpinner} from "react-icons/cg";
 import {DialogClose} from "@radix-ui/react-dialog";
+import {useToast} from "@/components/ui/use-toast";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -94,6 +95,7 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
 
   const [addModalOpen, setAddModalOpen] = useState(false)
 
+  const {toast} = useToast()
 
   //hide the id column from the table
   React.useEffect(() => {
@@ -198,7 +200,10 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-
+                  onClick={
+                    () => {
+                    }
+                  }
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
@@ -228,6 +233,7 @@ const AddCommandDialog = ({uid, setModalVisibility, modalVisibility}: {
   uid: string,
   setModalVisibility: any, modalVisibility: any
 }) => {
+  const {toast} = useToast()
   const [selectedColor, setSelectedColor] = useState("#299AD4")
   const [loading, setLoading] = useState(false)
   const commRef = useRef("")
@@ -248,10 +254,10 @@ const AddCommandDialog = ({uid, setModalVisibility, modalVisibility}: {
         dis: newDescription,
         color: newColor
       })
-      toast.success("Command Added.")
+      toast({description:"Command Added."})
     } catch (e) {
       console.log({e})
-      toast.error("Something went wrong")
+      toast({description:"Something went wrong"})
     } finally {
       setModalVisibility(false)
     }
