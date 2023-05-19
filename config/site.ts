@@ -1,18 +1,22 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "Next.js",
+  name: "Andronix Commands",
   description:
-    "Beautifully designed components built with Radix UI and Tailwind CSS.",
+    "Access your Andronix Commands from anywhere with just a click of a button on a browser.",
   mainNav: [
     {
       title: "Home",
       href: "/",
     },
+    {
+      title: "GitHub",
+      href: "git.andronix.app",
+    }
   ],
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/ui",
-    docs: "https://ui.shadcn.com",
+    github: "https://git.andronix.app",
+    play_store: "https://play.andronix.app",
+    docs: "https://docs.andronix.app",
   },
 }
