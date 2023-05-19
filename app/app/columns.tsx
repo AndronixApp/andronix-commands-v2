@@ -82,10 +82,11 @@ export const getColumns = (uid: string, toast: any): ColumnDef<ManipulatedComman
       const command: string = row.getValue('command') ?? ''
       return (
         <div className={"flex items-center justify-center space-x-3"}>
-          <VscCopy className={"text-md m-3 cursor-pointer transition transform hover:scale-125 duration-200 ease-in-out"} onClick={() => {
-            navigator.clipboard.writeText(command)
-              .then(() => toast({description: "Copied Command"}))
-          }}/>
+          <VscCopy className={"text-md m-3 cursor-pointer transition duration-200 ease-in-out hover:scale-125"}
+                   onClick={() => {
+                     navigator.clipboard.writeText(command)
+                       .then(() => toast({description: "Copied Command"}))
+                   }}/>
           <Dialog>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
