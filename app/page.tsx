@@ -4,6 +4,7 @@ import {BsFillTerminalFill} from "react-icons/bs";
 
 export default function IndexPage() {
   return (
+    // eslint-disable-next-line tailwindcss/no-contradicting-classname
     <div id="home" className="bg-[url('/bg.png')] bg-center">
       <div className={"flex h-screen items-center justify-center"}>
         <section className="container grid items-center justify-center gap-6 pb-8 pt-6 md:py-10">
