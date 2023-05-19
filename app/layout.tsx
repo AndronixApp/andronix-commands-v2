@@ -60,7 +60,6 @@ export default function RootLayout({children}: RootLayoutProps) {
         <meta property="twitter:url" content="https://web.andronix.app"/>
 
       </Head>
-      <head/>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
