@@ -140,7 +140,8 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
 
             </DropdownMenuContent>
           </DropdownMenu>
-          {table.getColumn("color")?.getFilterValue() &&
+          <>{
+            table.getColumn("color")?.getFilterValue() &&
             <div
               onClick={() => {
                 table.getColumn("color")?.setFilterValue(undefined)
@@ -151,6 +152,7 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
 
             </div>
           }
+          </>
         </div>
         <div>
           <Dialog open={addModalOpen}>
