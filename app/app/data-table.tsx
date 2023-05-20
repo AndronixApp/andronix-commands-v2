@@ -30,7 +30,6 @@ import {RxCross2} from "react-icons/rx";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {collection, doc, getFirestore, setDoc} from "@firebase/firestore";
 import firebase from "@/lib/firebase";
-import toast from "react-hot-toast";
 import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {BsCheck} from "react-icons/bs";
@@ -200,15 +199,20 @@ export function DataTable<TData, TValue>({columns, data, uid}: DataTableProps<TD
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  onClick={
-                    () => {
-                    }
-                  }
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} onClick={() => {
+                      console.log({cell: cell.id})
+                      if (!cell.id.includes("_actions")) {
+                        console.log(row.getValue("command") as string)
+                        navigator.clipboard.writeText(row.getValue("command") as string)
+                        toast({
+                          description: "Copied to clipboard ✅",
+                        })
+                      }
+                    }}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -254,10 +258,10 @@ const AddCommandDialog = ({uid, setModalVisibility, modalVisibility}: {
         dis: newDescription,
         color: newColor
       })
-      toast({description:"Command Added."})
+      toast({description: "Command Added."})
     } catch (e) {
       console.log({e})
-      toast({description:"Something went wrong"})
+      toast({description: "Something went wrong"})
     } finally {
       setModalVisibility(false)
     }

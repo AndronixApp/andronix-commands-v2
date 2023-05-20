@@ -11,14 +11,14 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
-import {ArrowUpDown, MoreHorizontal} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import React, {useRef, useState} from "react";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
 import {CgSpinner} from "react-icons/cg";
 import {Label} from "@/components/ui/label";
 import {colorFilters} from "@/app/app/data-table";
-import {BsCheck} from "react-icons/bs";
+import {BsCheck, BsThreeDotsVertical} from "react-icons/bs";
 import {Textarea} from "@/components/ui/textarea";
 import {deleteDoc, doc, getFirestore, updateDoc} from "@firebase/firestore";
 import firebase from "@/lib/firebase";
@@ -82,20 +82,24 @@ export const getColumns = (uid: string, toast: any): ColumnDef<ManipulatedComman
       const command: string = row.getValue('command') ?? ''
       return (
         <div className={"flex items-center justify-center space-x-3"}>
-          <VscCopy className={"text-md m-3 cursor-pointer transition duration-200 ease-in-out hover:scale-125"}
-                   onClick={() => {
-                     navigator.clipboard.writeText(command)
-                       .then(() => toast({description: "Copied Command"}))
-                   }}/>
+          {/*<VscCopy className={"text-md m-3 cursor-pointer transition duration-200 ease-in-out hover:scale-125"}*/}
+          {/*         onClick={() => {*/}
+          {/*           navigator.clipboard.writeText(command)*/}
+          {/*             .then(() => toast({description: "Copied Command"}))*/}
+          {/*         }}/>*/}
           <Dialog>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4"/>
+                <Button variant={"ghost"} className={"ml-4"}>
+                  <BsThreeDotsVertical
+                    className={"text-md cursor-pointer transition duration-200 ease-in-out hover:scale-125"}/>
                 </Button>
+                {/*<Button variant="ghost" className="h-8 w-8 p-0">*/}
+                {/*  <span className="sr-only">Open menu</span>*/}
+                {/*  <MoreHorizontal className="h-4 w-4"/>*/}
+                {/*</Button>*/}
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="start" className={""}>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem
                   onClick={() => navigator.clipboard.writeText(row.getValue('id'))
