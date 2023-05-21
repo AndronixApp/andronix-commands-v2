@@ -8,6 +8,8 @@ node_modules
 # testing
 coverage
 
+yarn.lock
+
 # next.js
 .next/
 out/
