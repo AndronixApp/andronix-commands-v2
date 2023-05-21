@@ -4,15 +4,41 @@ import {Input} from "@/components/ui/input";
 import {getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup} from "@firebase/auth";
 import firebase from "@/lib/firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {CgSpinner} from "react-icons/cg";
 import {useRouter} from "next/navigation";
 import {useToast} from "@/components/ui/use-toast";
 
+interface RequestData {
+  "debian_xfce": boolean,
+  "ubuntu_xfce": boolean,
+  "man_xfce": boolean,
+  "ubuntu_kde": boolean,
+  "premium": boolean,
+  "uid": string
+}
 
 const auth = getAuth(firebase);
-export default function LoginPage() {
 
+function isAllowed(email: string) {
+  const axios = require('axios');
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await axios.get(`https://us-central1-andronix-techriz.cloudfunctions.net/productLister?email=${email}`)
+      let purchaseObj = response as RequestData
+      console.log({purchaseObj})
+      if (!purchaseObj.premium) {
+        reject("User doesn't have a Premium account.")
+      } else {
+        resolve("User has access to commands.")
+      }
+    } catch (e) {
+      reject({})
+    }
+  })
+}
+
+export default function LoginPage() {
 
   const emailRef = useRef("")
   const passwordRef = useRef("")
@@ -21,21 +47,36 @@ export default function LoginPage() {
   }
 
   const loginWithGoogle = async () => {
+    setLocalLoading(true)
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider)
   }
 
   const [user, loading, error] = useAuthState(auth);
-
+  const [localLoading, setLocalLoading] = useState(false)
+  const [premiumUser, setPremiumUser] = useState(false)
   const router = useRouter()
+  const {toast} = useToast()
+
 
   useEffect(() => {
     if (user) {
       toast({title: "Login Successful!", description: `Welcome back ${user?.displayName}`})
-      router.push("/app")
     } else
       console.log("User logged out")
   }, [user]);
+
+  // check for premium
+  if (localLoading) {
+    router.push("/app")
+  } else {
+    toast({
+      title: "Error",
+      variant: "destructive",
+      description: "You don't have a premium account. Please purchase one to continue using the app."
+    })
+  }
+
 
   useEffect(() => {
     if (error) {
@@ -43,8 +84,9 @@ export default function LoginPage() {
     }
   }, [error]);
 
-  const {toast} = useToast()
+
   const handleSubmit = async (e: any) => {
+    setLocalLoading(true)
     // @ts-ignore
     const email = emailRef.current.value
     // @ts-ignore
